@@ -18,3 +18,7 @@ button:disabled { opacity: .5; cursor: wait; } fieldset { border: 0; margin: 0; 
 .details { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
 ul { padding-left: 22px; } li { margin: 10px 0; overflow-wrap: anywhere; }
 @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } main { padding: 18px 12px; } }
+
+form { background: white; padding: 20px; border: 1px solid #dfe6ef; border-radius: 12px; margin: 20px 0; }
+form input:not([type=checkbox]), form textarea, form select { margin: 6px 0; }
+main > div { background: white; padding: 20px; margin: 16px 0; border-radius: 12px; }

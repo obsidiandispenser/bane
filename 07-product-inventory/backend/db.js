@@ -7,7 +7,9 @@ async function connectDB() {
   return db;
 }
 function getDB() {
-  if (!db) throw new Error("MongoDB is not connected");
+  if (!db) {
+    throw new Error("MongoDB is not connected");
+  }
   return db;
 }
 module.exports = { connectDB, getDB };

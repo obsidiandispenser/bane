@@ -2,24 +2,36 @@ const express = require("express");
 const cors = require("cors");
 const { connectDB } = require("./db");
 const router = require("./routes/appointments");
+
 const app = express();
+
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use("/api/appointments", router);
+
 app.use((error, req, res, next) => {
-  if (error.status === 400) return res.status(400).json({ error: "Invalid JSON body" });
-  console.error(error);
-  res.status(500).json({ error: "Server error" });
+  if (error.status === 400) {
+    return res.status(400).json({ error: "Invalid JSON body" });
+  }
+  if (error.code === 11000) {
+    return res.status(409).json({ error: "This slot already exists or is booked" });
+  }
+  console.error(error.message);
+  res.status(500).json({ error: "Database error" });
 });
+
 async function start() {
   try {
     const db = await connectDB();
     await db.collection("availability").createIndex({ doctor: 1, date: 1, time: 1 }, { unique: true });
     await db.collection("appointments").createIndex({ slotId: 1 }, { unique: true });
-    app.listen(3000, () => console.log("Backend: http://localhost:3000"));
+    app.listen(3000, () => {
+      console.log("Backend: http://localhost:3000");
+    });
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
     process.exit(1);
   }
 }
+
 start();
